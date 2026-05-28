@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryan Lin — Computer Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e0f;
+    --bg-soft:#10171a;
+    --panel:#121b1f;
+    --line:#1f2d33;
+    --ink:#e6f0ef;
+    --ink-dim:#8aa0a0;
+    --ink-faint:#566668;
+    --accent:#3ddc97;
+    --accent-2:#5ad1ff;
+    --warn:#ffb454;
+    --mono:'Space Mono',monospace;
+    --sans:'Sora',sans-serif;
+  }
+  body.light{
+    --bg:#f3f6f5;
+    --bg-soft:#ffffff;
+    --panel:#ffffff;
+    --line:#dde6e4;
+    --ink:#0d1716;
+    --ink-dim:#4a5d5b;
+    --ink-faint:#8a9b99;
+    --accent:#0f9d63;
+    --accent-2:#1488c4;
+    --warn:#c47d12;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s,color .3s;
+  }
+  /* circuit grid backdrop */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:48px 48px;
+    opacity:.18;
+    z-index:0;
+    pointer-events:none;
+    mask-image:radial-gradient(circle at 50% 0%,#000 30%,transparent 80%);
+  }
+  body.light::before{opacity:.5}
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    background:radial-gradient(900px 600px at 80% -10%,rgba(61,220,151,.10),transparent 60%),
+               radial-gradient(700px 500px at 0% 30%,rgba(90,209,255,.07),transparent 60%);
+    z-index:0;pointer-events:none;
+  }
+  .wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 28px;
+    backdrop-filter:blur(10px);
+    background:rgba(10,14,15,.6);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{font-family:var(--mono);font-weight:700;letter-spacing:.5px;font-size:15px}
+  .brand .blink{color:var(--accent);animation:blink 1.2s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .navlinks{display:flex;gap:26px;font-family:var(--mono);font-size:13px}
+  .navlinks a{color:var(--ink-dim);text-decoration:none;transition:color .2s}
+  .navlinks a:hover{color:var(--accent)}
+  @media(max-width:640px){.navlinks{display:none}}
+  .navright{display:flex;align-items:center;gap:18px}
+  .toggle{
+    background:var(--panel);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:var(--mono);font-size:13px;cursor:pointer;
+    padding:8px 14px;border-radius:8px;transition:.2s;display:flex;align-items:center;gap:8px;
+  }
+  .toggle:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* hero */
+  header{padding:120px 0 90px}
+  .tag{
+    font-family:var(--mono);font-size:13px;color:var(--accent);
+    display:inline-flex;align-items:center;gap:10px;margin-bottom:26px;
+    border:1px solid var(--line);padding:7px 14px;border-radius:30px;
+    background:var(--panel);
+  }
+  .tag .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+  h1{
+    font-size:clamp(40px,8vw,82px);
+    font-weight:800;line-height:1.02;letter-spacing:-2px;
+    margin-bottom:22px;
+  }
+  h1 .grad{
+    background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{font-size:clamp(17px,2.4vw,21px);color:var(--ink-dim);max-width:640px;margin-bottom:36px}
+  .lede b{color:var(--ink);font-weight:600}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:14px;text-decoration:none;
+    padding:13px 22px;border-radius:8px;transition:.2s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn.primary{background:var(--accent);color:#04140d;font-weight:700}
+  .btn.primary:hover{box-shadow:0 0 28px rgba(61,220,151,.5);transform:translateY(-2px)}
+  .btn.ghost{border:1px solid var(--line);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* section heads */
+  section{padding:70px 0;position:relative}
+  .shead{display:flex;align-items:baseline;gap:16px;margin-bottom:44px}
+  .shead .num{font-family:var(--mono);color:var(--accent);font-size:14px}
+  .shead h2{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-1px}
+  .shead .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:start}
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr}}
+  .about-grid p{color:var(--ink-dim);font-size:17px;margin-bottom:18px}
+  .about-grid p b{color:var(--ink);font-weight:600}
+  .factcard{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:26px;font-family:var(--mono);font-size:14px;
+  }
+  .factcard .row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .factcard .row:last-child{border:0}
+  .factcard .k{color:var(--ink-faint)}
+  .factcard .v{color:var(--ink)}
+  .factcard .v.hl{color:var(--accent)}
+
+  /* projects */
+  .projects{display:grid;gap:22px}
+  .proj{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:32px;transition:.25s;position:relative;overflow:hidden;
+  }
+  .proj::before{
+    content:"";position:absolute;left:0;top:0;height:100%;width:3px;
+    background:linear-gradient(var(--accent),var(--accent-2));transform:scaleY(0);transform-origin:top;transition:.3s;
+  }
+  .proj:hover{border-color:var(--accent);transform:translateX(6px)}
+  .proj:hover::before{transform:scaleY(1)}
+  .proj .ptop{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  .proj h3{font-size:22px;font-weight:700}
+  .proj .when{font-family:var(--mono);font-size:12px;color:var(--ink-faint);white-space:nowrap}
+  .proj p{color:var(--ink-dim);font-size:15.5px;margin-bottom:18px;max-width:760px}
+  .stack{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--accent-2);border:1px solid var(--line);padding:5px 11px;border-radius:6px;background:var(--bg-soft)}
+
+  /* skills */
+  .skillgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+  .skillbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .skillbox h4{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:.5px;text-transform:uppercase}
+  .skillbox .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .skillbox .tags span{font-size:13.5px;color:var(--ink-dim);background:var(--bg-soft);border:1px solid var(--line);padding:5px 10px;border-radius:6px}
+
+  /* experience */
+  .timeline{border-left:1px solid var(--line);margin-left:8px}
+  .xp{position:relative;padding:0 0 40px 34px}
+  .xp:last-child{padding-bottom:0}
+  .xp::before{content:"";position:absolute;left:-6px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--bg)}
+  .xp .xhead{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+  .xp h3{font-size:18px;font-weight:600}
+  .xp .role{color:var(--accent);font-family:var(--mono);font-size:13px;margin-bottom:12px}
+  .xp .when{font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+  .xp ul{list-style:none;display:grid;gap:8px}
+  .xp li{color:var(--ink-dim);font-size:15px;padding-left:20px;position:relative}
+  .xp li::before{content:"›";position:absolute;left:0;color:var(--accent)}
+
+  /* github repos */
+  .repogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+  .repo{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;
+    text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:.22s;min-height:150px;
+  }
+  .repo:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  .repo .rname{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .repo .rname::before{content:"›";color:var(--accent)}
+  .repo .rdesc{font-size:14px;color:var(--ink-dim);flex:1}
+  .repo .rmeta{display:flex;gap:16px;font-family:var(--mono);font-size:12px;color:var(--ink-faint);align-items:center}
+  .repo .lang{display:flex;align-items:center;gap:6px}
+  .repo .langdot{width:9px;height:9px;border-radius:50%;background:var(--accent-2)}
+  .repo .star{color:var(--warn)}
+  .ghloading{font-family:var(--mono);font-size:14px;color:var(--ink-faint);padding:20px 0}
+  .contact{text-align:center;padding:90px 0 70px}
+  .contact h2{font-size:clamp(30px,6vw,56px);font-weight:800;letter-spacing:-1.5px;margin-bottom:18px}
+  .contact h2 .grad{background:linear-gradient(100deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .contact p{color:var(--ink-dim);max-width:480px;margin:0 auto 32px;font-size:17px}
+  .contact .cta{justify-content:center}
+
+  footer{border-top:1px solid var(--line);padding:28px 0;text-align:center;font-family:var(--mono);font-size:12.5px;color:var(--ink-faint)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">ryan<span class="blink">_</span>lin</div>
+  <div class="navright">
+    <div class="navlinks">
+      <a href="#about">about</a>
+      <a href="#work">work</a>
+      <a href="#skills">skills</a>
+      <a href="#experience">experience</a>
+      <a href="#github">github</a>
+      <a href="#contact">contact</a>
+    </div>
+    <button class="toggle" id="themeToggle" aria-label="Toggle theme"><span id="themeIcon">◐</span><span id="themeLabel">light</span></button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <span class="tag"><span class="dot"></span>Computer Engineer · Stony Brook ’26</span>
+    <h1>Building at the edge of<br><span class="grad">hardware & software.</span></h1>
+    <p class="lede">I’m Ryan — a computer engineering student working on <b>embedded systems</b>, <b>FPGA accelerators</b>, and <b>neuromorphic computing</b>. From soldering PCBs to converting CNNs into spiking neural networks, I like problems that live close to the metal.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/Ryry525" target="_blank" rel="noopener">⌨ View GitHub</a>
+      <a class="btn ghost" href="resume.pdf" download>↓ Resume</a>
+      <a class="btn ghost" href="mailto:ryan.lin@stonybrook.edu">✉ Get in touch</a>
+    </div>
+  </header>
+
+  <section id="about" class="reveal">
+    <div class="shead"><span class="num">01</span><h2>About</h2><span class="rule"></span></div>
+    <div class="about-grid">
+      <div>
+        <p>I’m a senior in <b>Computer Engineering</b> at Stony Brook University, drawn to the layer where logic meets silicon. My coursework runs from digital design with VHDL and SystemVerilog to control systems and real-time operating systems.</p>
+        <p>Lately I’ve been deep in <b>neuromorphic hardware</b> — designing a custom IC for leaky integrate-and-fire neurons — and building a <b>SystemVerilog 2D convolution accelerator</b> verified in QuestaSim. As an embedded systems TA, I’ve mentored 20+ students through AVR firmware, FSMs, and serial protocols.</p>
+        <p>Outside the lab, I run <b>RL Imports</b>, where I’ve built Python automation and inventory systems that have processed $200k+ in throughput.</p>
+      </div>
+      <div class="factcard">
+        <div class="row"><span class="k">location</span><span class="v">Brooklyn / Stony Brook, NY</span></div>
+        <div class="row"><span class="k">degree</span><span class="v">B.E. Computer Engineering</span></div>
+        <div class="row"><span class="k">graduating</span><span class="v hl">May 2026</span></div>
+        <div class="row"><span class="k">focus</span><span class="v hl">embedded · FPGA · ML hw</span></div>
+        <div class="row"><span class="k">status</span><span class="v hl">open to roles</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="reveal">
+    <div class="shead"><span class="num">02</span><h2>Selected Work</h2><span class="rule"></span></div>
+    <div class="projects">
+
+      <div class="proj">
+        <div class="ptop">
+          <h3>Low-Power IC for Neuromorphic Computing</h3>
+          <span class="when">Sep 2025 — Present</span>
+        </div>
+        <p>Designing a custom hardware architecture implementing the Leaky Integrate-and-Fire (LIF) model — mapping synaptic weights and neuronal spiking behavior onto an IC for high-performance, low-power neuromorphic compute. Built Python testbenches to validate weight mapping and verify spike-timing accuracy.</p>
+        <div class="stack"><span class="chip">Python</span><span class="chip">Machine Learning</span><span class="chip">LIF / SNN</span><span class="chip">IC Design</span></div>
+      </div>
+
+      <div class="proj">
+        <div class="ptop">
+          <h3>Hardware Accelerator for 2D Convolution</h3>
+          <span class="when">Sep 2025 — Dec 2025</span>
+        </div>
+        <p>Built a parameterized SystemVerilog 2D convolution engine with reconfigurable bit widths, matrix sizes, and kernel dimensions for AXI stream processing. Designed a high-speed MAC unit, output FIFO, buffer, and control unit, then verified the full system with randomized-input testbenches in QuestaSim before synthesis for PPA optimization.</p>
+        <div class="stack"><span class="chip">SystemVerilog</span><span class="chip">Vivado</span><span class="chip">QuestaSim</span><span class="chip">AXI</span><span class="chip">Linux</span></div>
+      </div>
+
+      <div class="proj">
+        <div class="ptop">
+          <h3>Custom 4×4 Macropad — Rotary Encoder & LCD</h3>
+          <span class="when">Aug 2024 — Dec 2024</span>
+        </div>
+        <p>An end-to-end embedded HID: a 16-key matrix, rotary encoder, and LCD module for programmable workflow automation. Designed the PCB in KiCad and the enclosure in Fusion360, hand-soldered every component, and wrote the QMK firmware in C to sync keystrokes, dial inputs, and dynamic screen readouts.</p>
+        <div class="stack"><span class="chip">C</span><span class="chip">QMK Firmware</span><span class="chip">KiCad</span><span class="chip">Fusion360</span><span class="chip">Soldering</span></div>
+      </div>
+
+      <div class="proj">
+        <div class="ptop">
+          <h3>RL Imports — Inventory & Automation Platform</h3>
+          <span class="when">Nov 2023 — Present</span>
+        </div>
+        <p>Architected a relational inventory system with automated low-stock triggers that cut stockouts by 30%, plus an async Python service deployed via Docker to automate PO processing — 2× faster fulfillment and a 95% reduction in manual entry errors. Scaled the infrastructure to handle $200k+ in throughput with zero critical downtime.</p>
+        <div class="stack"><span class="chip">Python</span><span class="chip">Docker</span><span class="chip">SQL</span><span class="chip">Async</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills" class="reveal">
+    <div class="shead"><span class="num">03</span><h2>Toolkit</h2><span class="rule"></span></div>
+    <div class="skillgrid">
+      <div class="skillbox">
+        <h4>Languages</h4>
+        <div class="tags"><span>Python</span><span>C</span><span>C++</span><span>SystemVerilog</span><span>VHDL</span><span>Assembly</span><span>MATLAB</span><span>JavaScript</span><span>HTML/CSS</span><span>Bash</span></div>
+      </div>
+      <div class="skillbox">
+        <h4>Hardware & EDA</h4>
+        <div class="tags"><span>Vivado</span><span>QuestaSim</span><span>ActiveHDL</span><span>KiCad</span><span>OrCAD</span><span>Fusion360</span><span>LTspice</span><span>Microchip Studio</span></div>
+      </div>
+      <div class="skillbox">
+        <h4>Embedded & Lab</h4>
+        <div class="tags"><span>ESP32</span><span>Raspberry Pi</span><span>Oscilloscope</span><span>Multimeter</span><span>I²C / SPI</span><span>UART / USART</span><span>Soldering</span></div>
+      </div>
+      <div class="skillbox">
+        <h4>Tools & Platforms</h4>
+        <div class="tags"><span>Git / GitHub</span><span>Linux</span><span>Docker</span><span>VS Code</span><span>Android Studio</span><span>Appium</span><span>WordPress</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="reveal">
+    <div class="shead"><span class="num">04</span><h2>Experience</h2><span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="xp">
+        <div class="xhead"><h3>Stony Brook University — Dept. of Electrical & Computer Engineering</h3><span class="when">Aug 2025 — Dec 2025</span></div>
+        <div class="role">Embedded Systems Teaching Assistant · Stony Brook, NY</div>
+        <ul>
+          <li>Mentored 20+ students in debugging AVR assembly firmware, hardware-software integration, and microcontroller lab projects.</li>
+          <li>Evaluated work on interrupt-driven architectures, FSMs, and serial comms (USART/UART, I²C, SPI) for peripherals like LCDs and RF modules.</li>
+          <li>Helped students bridge theory and practice — verifying hardware logic, reading schematics, and tracing signals with lab equipment.</li>
+        </ul>
+      </div>
+
+      <div class="xp">
+        <div class="xhead"><h3>RL Imports</h3><span class="when">Nov 2023 — Present</span></div>
+        <div class="role">Technical Founder · Brooklyn, NY</div>
+        <ul>
+          <li>Architected a relational database and inventory system that cut stockout events 30% via automated low-stock triggers.</li>
+          <li>Engineered an async Python service (Docker) automating PO processing — 2× faster fulfillment, 95% fewer manual entry errors.</li>
+          <li>Scaled infrastructure for high-volume processing, managing $200k+ in throughput with zero critical downtime.</li>
+        </ul>
+      </div>
+
+      <div class="xp">
+        <div class="xhead"><h3>J.C. Broderick & Associates</h3><span class="when">Jun 2023 — Aug 2023</span></div>
+        <div class="role">Air Sampling Technician · Hauppauge, NY</div>
+        <ul>
+          <li>Operated and calibrated air sampling pumps with manometers for precise, consistent airflow measurement in the field.</li>
+          <li>Maintained detailed technical logs of hardware metrics to support environmental analysis and regulatory compliance.</li>
+          <li>Followed strict SOPs for hardware testing and data acquisition to ensure accuracy and reliability.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="github" class="reveal">
+    <div class="shead"><span class="num">05</span><h2>From GitHub</h2><span class="rule"></span></div>
+    <div class="repogrid" id="repoGrid">
+      <div class="ghloading">fetching repositories…</div>
+    </div>
+    <div style="margin-top:26px">
+      <a class="btn ghost" href="https://github.com/Ryry525" target="_blank" rel="noopener">⌨ See all on GitHub →</a>
+    </div>
+  </section>
+
+  <section id="contact" class="contact reveal">
+    <h2>Let’s build<br>something <span class="grad">close to the metal.</span></h2>
+    <p>I’m open to embedded, hardware, and ML-hardware roles. Reach out — I’d love to talk.</p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:ryan.lin@stonybrook.edu">✉ ryan.lin@stonybrook.edu</a>
+      <a class="btn ghost" href="https://linkedin.com/in/ryan-lin-645367202/" target="_blank" rel="noopener">in/ LinkedIn</a>
+      <a class="btn ghost" href="https://github.com/Ryry525" target="_blank" rel="noopener">⌨ GitHub</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  designed & built by ryan lin · © 2026 · <span style="color:var(--accent)">stony brook university</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* theme toggle */
+  const tBtn=document.getElementById('themeToggle');
+  const tIcon=document.getElementById('themeIcon');
+  const tLabel=document.getElementById('themeLabel');
+  tBtn.addEventListener('click',()=>{
+    const light=document.body.classList.toggle('light');
+    tIcon.textContent=light?'☀':'◐';
+    tLabel.textContent=light?'dark':'light';
+  });
+
+  /* live GitHub repos */
+  const grid=document.getElementById('repoGrid');
+  const escapeHtml=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const fallback=[
+    {name:'PortfolioWeb',description:'Personal portfolio website.',language:'JavaScript',stargazers_count:1,html_url:'https://github.com/Ryry525/PortfolioWeb'}
+  ];
+  function renderRepos(list){
+    if(!list.length){grid.innerHTML='<div class="ghloading">No public repositories to show.</div>';return;}
+    grid.innerHTML=list.map(r=>`
+      <a class="repo" href="${escapeHtml(r.html_url)}" target="_blank" rel="noopener">
+        <div class="rname">${escapeHtml(r.name)}</div>
+        <div class="rdesc">${escapeHtml(r.description)||'No description provided.'}</div>
+        <div class="rmeta">
+          ${r.language?`<span class="lang"><span class="langdot"></span>${escapeHtml(r.language)}</span>`:''}
+          ${r.stargazers_count?`<span class="star">★ ${r.stargazers_count}</span>`:''}
+        </div>
+      </a>`).join('');
+  }
+  fetch('https://api.github.com/users/Ryry525/repos?sort=updated&per_page=100')
+    .then(res=>res.ok?res.json():Promise.reject())
+    .then(repos=>{
+      const top=repos
+        .filter(r=>!r.fork)
+        .sort((a,b)=>(b.stargazers_count-a.stargazers_count)||(new Date(b.updated_at)-new Date(a.updated_at)))
+        .slice(0,6);
+      renderRepos(top.length?top:fallback);
+    })
+    .catch(()=>renderRepos(fallback));
+</script>
+
+</body>
+</html>
